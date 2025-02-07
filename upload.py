@@ -24,7 +24,7 @@ except Exception as e:
     exit(1)
 
 # Define local folder path
-local_folder = "/Users/khawarahemadkhan/web pages/download_mp3/songs-api/public/songs"
+local_folder = "/Users/khawarahemadkhan/web pages/musify script/songs"
 
 # Check if folder exists
 if not os.path.exists(local_folder):

@@ -6,7 +6,7 @@ import glob
 base_url = "https://pub-b03428fdf2a349f384cb1a14c6700866.r2.dev/"
 
 # List of all JSON files (e.g., faheem_abdullah.json, amir_ameer.json)
-json_files = glob.glob("songs-api/public/songs/*.json")  # This will match all JSON files in the current directory
+json_files = glob.glob("songs/*.json")  # This will match all JSON files in the current directory
 
 merged_data = []
 current_id = 1  # Start the ID sequence from 1

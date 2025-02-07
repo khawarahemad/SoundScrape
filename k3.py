@@ -70,28 +70,34 @@ def download_song(artist_name, song_title, index, total):
         print(f"⚠️ Skipping {song_title} (already exists)")
         return mp3_file  
 
+    # Set YouTube download options
     ydl_opts = {
         'format': 'bestaudio/best',
-        'outtmpl': f'{OUTPUT_FOLDER}/%(title)s.%(ext)s',
+        'outtmpl': os.path.join(OUTPUT_FOLDER, f"{sanitized_title}.%(ext)s"),
         'postprocessors': [{
             'key': 'FFmpegExtractAudio',
             'preferredcodec': 'mp3',
             'preferredquality': '192',
         }]
     }
+    
     search_query = f"{artist_name} {song_title} audio"
     
     try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info = ydl.extract_info(f"ytsearch:{search_query}", download=True)['entries'][0]
-            original_filename = f"{OUTPUT_FOLDER}/{info['title']}.mp3"
-            sanitized_filename = os.path.join(OUTPUT_FOLDER, f"{sanitize_filename(info['title'])}.mp3")
-            os.rename(original_filename, sanitized_filename)  # Rename file to sanitized name
+            downloaded_filename = os.path.join(OUTPUT_FOLDER, f"{info['title']}.mp3")
+
+            # Ensure correct renaming
+            if downloaded_filename != mp3_file and os.path.exists(downloaded_filename):
+                os.rename(downloaded_filename, mp3_file)
+
             print(f"✅ {song_title} downloaded successfully!")
-            return sanitized_filename
+            return mp3_file
     except Exception as e:
         print(f"❌ Failed to download {song_title}: {e}")
         return None
+
 
 def main():
     artist_name = input("Enter the artist name: ")
